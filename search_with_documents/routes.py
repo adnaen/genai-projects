@@ -1,5 +1,6 @@
 import os
 from fastapi import APIRouter, Depends, UploadFile, HTTPException, status
+from sqlalchemy.util import is_exit_exception
 from search_with_documents.settings import settings
 from search_with_documents.models import FileMetaData
 from search_with_documents.db import get_session
@@ -17,6 +18,14 @@ async def file_upload(file: UploadFile, session=Depends(get_session)):
         raise HTTPException(
             status_code=status.HTTP_406_NOT_ACCEPTABLE,
             detail=f"unsupported file {file.filename}, only support  {settings.ALLOWED_FILES}",
+        )
+    is_exisist = (
+        session.query(FileMetaData).filter(FileMetaData.name == file.filename).first()
+    )
+
+    if is_exisist:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="file already exisit."
         )
     try:
         upload_path = settings.UPLOAD_PATH / str(file.filename)
