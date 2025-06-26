@@ -1,0 +1,9 @@
+- A Generative AI api for QnA with documents.
+
+Tools used
+==========
+- fastapi
+- langchain
+- llamacpp
+- pypdf
+

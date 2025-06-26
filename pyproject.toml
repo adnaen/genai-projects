@@ -4,4 +4,11 @@ version = "0.1.0"
 description = "project i'm doing for learning."
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "chromadb>=1.0.13",
+    "fastapi>=0.115.13",
+    "langchain-community>=0.3.26",
+    "pypdf>=5.6.1",
+    "sentence-transformers>=4.1.0",
+    "torch>=2.7.1",
+]
