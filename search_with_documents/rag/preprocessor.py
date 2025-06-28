@@ -1,5 +1,6 @@
 from typing import Any, List
 from langchain_core.documents import Document
+from search_with_documents.settings import settings
 
 
 def _get_loader(doc_path: str) -> Any:
@@ -20,10 +21,14 @@ def _get_loader(doc_path: str) -> Any:
             raise ValueError(f"un supported file {ext}")
 
 
-def load_doc(doc_path: str) -> List[Document]:
+def load_doc(doc_path: str, file_id: str) -> List[Document]:
     loader_cls = _get_loader(doc_path=doc_path)
-    loader = loader_cls(doc_path)
-    return loader.load()
+    loader = loader_cls(str(settings.UPLOAD_PATH / doc_path))
+    docs = loader.load()
+    for doc in docs:
+        doc.metadata["file_id"] = file_id
+
+    return docs
 
 
 def get_chunks(docs: List[Document]) -> List[Document]:
