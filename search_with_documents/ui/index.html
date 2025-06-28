@@ -60,7 +60,9 @@
         <div
           id="fileDataSection"
           class="grid grid-cols-2 gap-5 border border-dotted p-5 rounded-lg border-orange-500 max-h-70 overflow-x-hidden overflow-y-auto"
-        ></div>
+        >
+          <span class="text-md text-gray-300 hidden" id="docStatus"></span>
+        </div>
       </section>
 
       <section class="border border-stale-800 border-dashed">
@@ -76,6 +78,11 @@
             placeholder="Ask ..."
             id="promptArea"
           ></textarea>
+          <button
+            class="mb-10 mt-4 w-full p-2 px-20 rounded-md bg-orange-500 hover:bg-orange-700 text-white cursor-pointer"
+          >
+            ask
+          </button>
         </form>
       </section>
     </main>
