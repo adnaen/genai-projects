@@ -3,30 +3,35 @@
     <title>Document Searcher</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="w-full">
-    <h1 class="text-7xl font-bold text-center">Document Searcher 🔍</h1>
+  <body class="px-10 bg-black">
+    <h1 class="text-7xl font-bold text-center text-white">
+      Document Searcher 🔍
+    </h1>
 
-    <main class="max-w-4xl mx-auto px-9 mt-20">
+    <!-- <main class="max-w-4xl mx-auto px-9 mt-20"> -->
+    <main class="grid grid-cols-2 gap-x-10 mt-20">
       <section>
+        <h2 class="text-4xl font-bold text-center mb-10 text-orange-500">
+          Upload your documents
+        </h2>
         <form id="fileUploadForm">
           <div>
             <div class="flex items-center justify-center w-full">
               <label
                 for="dropzone-file"
-                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
               >
                 <div
                   class="flex flex-col items-center justify-center pt-5 pb-6"
                 >
-                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                  <p class="mb-2 text-sm text-white">
                     <span class="font-semibold">Click to upload</span> or drag
                     and drop
                   </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">
+                  <p class="text-xs text-gray-500 dark:text-gray-300">
                     PDF, Text, or Markdown
                   </p>
                 </div>
-                <label for="dropzone-file">Upload your document</label>
                 <input
                   id="dropzone-file"
                   type="file"
@@ -37,20 +42,26 @@
             </div>
             <div class="flex justify-center items-center">
               <button
-                class="mt-10 p-2 px-20 rounded-md bg-green-800 hover:bg-green-900 cursor-pointer"
+                class="my-10 w-full p-2 px-20 rounded-md bg-orange-500 hover:bg-orange-700 text-white cursor-pointer"
               >
-                Submit
+                Upload
               </button>
             </div>
           </div>
         </form>
+
+        <h2 class="text-2xl font-bold text-orange-400">Your documents 📓</h2>
+        <div
+          id="fileDataSection"
+          class="grid grid-cols-3 border border-doubled p-5 rounded-lg"
+        ></div>
       </section>
 
-      <h2 class="text-2xl font-bold text-slate-400">Your documents 📓</h2>
-      <section
-        id="fileDataSection"
-        class="grid grid-cols-3 border border-doubled p-5 rounded-lg"
-      ></section>
+      <section class="border border-stale-800 border-dashed">
+        <h2 class="text-4xl font-bold text-center mb-10">
+          Chat with your document
+        </h2>
+      </section>
     </main>
 
     <script src="./script.js"></script>
