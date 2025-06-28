@@ -9,9 +9,11 @@
     </h1>
 
     <!-- <main class="max-w-4xl mx-auto px-9 mt-20"> -->
-    <main class="grid grid-cols-2 gap-x-10 mt-20">
+    <main class="grid grid-cols-2 gap-x-20 mt-20">
       <section>
-        <h2 class="text-4xl font-bold text-center mb-10 text-orange-500">
+        <h2
+          class="text-4xl font-bold text-start mb-10 text-orange-500 underline"
+        >
           Upload your documents
         </h2>
         <form id="fileUploadForm">
@@ -50,17 +52,31 @@
           </div>
         </form>
 
-        <h2 class="text-2xl font-bold text-orange-400">Your documents 📓</h2>
+        <h2
+          class="text-4xl font-bold text-orange-500 text-start underline mb-10"
+        >
+          Your documents 📓
+        </h2>
         <div
           id="fileDataSection"
-          class="grid grid-cols-3 border border-doubled p-5 rounded-lg"
+          class="grid grid-cols-2 gap-5 border border-dotted p-5 rounded-lg border-orange-500 max-h-70 overflow-x-hidden overflow-y-auto"
         ></div>
       </section>
 
       <section class="border border-stale-800 border-dashed">
-        <h2 class="text-4xl font-bold text-center mb-10">
-          Chat with your document
+        <h2
+          class="text-4xl font-bold text-start mb-10 text-orange-500 underline"
+        >
+          Chat with your document 📃
         </h2>
+
+        <form id="chatForm">
+          <textarea
+            class="bg-gray-500 outline-none text-white p-5 text-2xl w-full rounded-lg max-h-40"
+            placeholder="Ask ..."
+            id="promptArea"
+          ></textarea>
+        </form>
       </section>
     </main>
 

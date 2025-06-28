@@ -51,7 +51,7 @@ const addNewFileInfo = (filename, date) => {
   const divHere = document.createElement("div");
 
   const h3Here = document.createElement("h3");
-  h3Here.className = "text-lg font-bold";
+  h3Here.className = "text-lg font-bold text-white";
   h3Here.innerText = filename;
 
   const spanHere = document.createElement("span");
