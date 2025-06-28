@@ -10,3 +10,8 @@ class FileMetaDataRead(BaseModel):
     name: str
     type: str
     created_at: datetime
+
+
+class Prompt(BaseModel):
+    prompt: str
+    file_id: UUID

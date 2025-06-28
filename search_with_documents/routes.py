@@ -1,17 +1,38 @@
 import os
-from fastapi import APIRouter, Depends, UploadFile, HTTPException, status
-from sqlalchemy.util import is_exit_exception
+from fastapi import (
+    Request,
+    Depends,
+    APIRouter,
+    UploadFile,
+    HTTPException,
+    status,
+)
+from search_with_documents.db import get_session
 from search_with_documents.settings import settings
 from search_with_documents.models import FileMetaData
-from search_with_documents.db import get_session
-from search_with_documents.schemas import FileMetaDataRead
+from search_with_documents.schemas import FileMetaDataRead, Prompt
 
 
 router = APIRouter()
 
 
+@router.post("/ask")
+async def llm_response(request: Request, prompt: Prompt, session=Depends(get_session)):
+    file = session.query(FileMetaData).filter(FileMetaData.id == prompt.file_id).first()
+    if not file:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="file not found"
+        )
+
+    result = request.app.state.vector_store_manager.retriever(
+        query=prompt.prompt, file_id=prompt.file_id
+    )
+    print(f"result : {result}")
+    return {"prompt": prompt.prompt, "file_name": file.name}
+
+
 @router.post("/file", response_model=FileMetaDataRead)
-async def file_upload(file: UploadFile, session=Depends(get_session)):
+async def file_upload(request: Request, file: UploadFile, session=Depends(get_session)):
     ext = file.filename.split(".")[1]
 
     if ext not in settings.ALLOWED_FILES:
@@ -36,6 +57,12 @@ async def file_upload(file: UploadFile, session=Depends(get_session)):
         new_file = FileMetaData(name=file.filename, type=ext)
         session.add(new_file)
         session.commit()
+        session.refresh(new_file)
+
+        result = request.app.state.vector_store_manager.add_new_document(
+            doc_path=new_file.name, file_id=new_file.id
+        )
+
         return new_file
     except Exception as e:
         raise HTTPException(
