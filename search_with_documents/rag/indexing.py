@@ -1,8 +1,7 @@
 from uuid import uuid1
-from typing import Tuple, List
+from typing import Tuple
 from chromadb import PersistentClient
 from langchain_chroma import Chroma
-from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
 from search_with_documents.settings import settings
 from search_with_documents.rag.preprocessor import get_chunks, load_doc

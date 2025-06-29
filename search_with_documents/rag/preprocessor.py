@@ -36,7 +36,7 @@ def get_chunks(docs: List[Document]) -> List[Document]:
 
     splitter = RecursiveCharacterTextSplitter(
         separators=["\n\n", "\n", ".", " ", ""],
-        chunk_size=1000,
+        chunk_size=1500,
         chunk_overlap=200,
     )
     return splitter.split_documents(docs)
