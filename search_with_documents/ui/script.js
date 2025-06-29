@@ -4,6 +4,7 @@ const fileResultField = document.getElementById("fileDataSection");
 const docStatus = document.getElementById("docStatus");
 const prompt = document.getElementById("promptArea");
 const chatForm = document.getElementById("chatForm");
+const resultField = document.getElementById("resultField");
 const API_ROUTE = "http://localhost:8000/api/v1";
 
 fileUploadForm.addEventListener("submit", (event) => {
@@ -28,7 +29,7 @@ fileUploadForm.addEventListener("submit", (event) => {
       }
     })
     .then((data) => {
-      addNewFileInfo(data, id, data.name, data.created_at);
+      addNewFileInfo(data.id, data.name, data.created_at);
     })
     .catch((err) => {
       alert(`something went wrong : ${err}`);
@@ -101,10 +102,34 @@ chatForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const formData = new FormData();
-  formData.append("prompt", prompt.value);
-  formData.append("file_id", selectedFileContext.value);
-
-  console.log(`choosed file id : ${selectedFileContext.value}`);
-  console.log(`prompt: ${prompt.value}`);
+  fetch(`${API_ROUTE}/ask`, {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      prompt: prompt.value,
+      file_id: selectedFileContext.value,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `error occure in llm inference. code: ${response.status}`,
+        );
+      } else {
+        return response.json();
+      }
+    })
+    .then((data) => {
+      resultField.classList.remove("hidden");
+      resultField.innerText = `
+      get prompt: ${data.prompt}
+      get file name: ${data.file_name}
+      `;
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
