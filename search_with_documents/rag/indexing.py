@@ -1,3 +1,4 @@
+from uuid import uuid1
 from typing import Tuple, List
 from chromadb import PersistentClient
 from langchain_chroma import Chroma
@@ -23,16 +24,22 @@ class VectorStoreManager:
         try:
             docs = load_doc(doc_path=doc_path, file_id=file_id)
             chunks = get_chunks(docs=docs)
-            self.lang_client.add_documents(documents=chunks)
+            ids = [str(uuid1()) for _ in chunks]
+            self.lang_client.add_documents(documents=chunks, ids=ids)
             return True, "documents added successfully!"
         except Exception as e:
             return False, str(e)
 
-    def retriever(self, query: str, file_id: str) -> List[Document]:
+    def retriever(self, query: str, file_id: str) -> str:
         try:
             result = self.lang_client.similarity_search(
-                query=query, filter={"file_id": file_id}
+                query=query, filter={"file_id": file_id}, k=2
             )
-            return result
-        except Exception:
-            return []
+
+            cleaned = " ".join(
+                [" ".join(each.page_content.split("\n")) for each in result]
+            )
+            return cleaned
+        except Exception as e:
+            print(f"error on {e}")
+            return ""
