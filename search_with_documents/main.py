@@ -3,16 +3,23 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from search_with_documents.routes import router
 from search_with_documents.db import Base, engine
-from search_with_documents.rag import VectorStoreManager
+from search_with_documents.rag import VectorStoreManager, LLMInferenceManager
 
 Base.metadata.create_all(bind=engine)  # migrate all models.
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    print("setup vector store ⌛")
     app.state.vector_store_manager = VectorStoreManager()
+    print("vector store setup completed.✅")
+
+    print("setup LLM inference ⌛")
+    app.state.llm_manager = LLMInferenceManager()
+    print("LLM inference setup completed.✅")
+
     yield
-    print("app closed")
+    print("app closed ❌")
 
 
 app = FastAPI(lifespan=lifespan)

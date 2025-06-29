@@ -17,12 +17,17 @@ class Settings(BaseSettings):
     SQLITE_URI: str = "sqlite:///./search_with_documents/database.db"
 
     # llm config
-    MODEL_DOWNLOAD_URL = "https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q8_0.gguf?download=true"
+    MODEL_DOWNLOAD_URL: str = (
+        "https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q8_0.gguf?download=true"
+    )
+
     LLM_NAME: str = "tinyllama_1_1b_chat_v1_0_gguf.gguf"
     TOP_P: float = 0.9
     TOP_K: int = 50
     TEMPERATURE: float = 0.8
-    RESULT_TOKEN: int = 512
+    N_THREADS: int = 3  # no.of cores - 1
+    MAX_TOKENS: int = 2000
+    N_CTX: int = 2048
 
 
 settings = Settings()
