@@ -5,8 +5,11 @@ __pycache__/
 
 # C extensions
 *.so
+
+# custome
 **/uploads
 **.db
+**/chroma
 
 # Distribution / packaging
 .Python

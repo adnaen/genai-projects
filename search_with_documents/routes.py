@@ -25,10 +25,10 @@ async def llm_response(request: Request, prompt: Prompt, session=Depends(get_ses
         )
 
     result = request.app.state.vector_store_manager.retriever(
-        query=prompt.prompt, file_id=prompt.file_id
+        query=prompt.prompt, file_id=str(prompt.file_id)
     )
-    print(f"result : {result}")
-    return {"prompt": prompt.prompt, "file_name": file.name}
+    print(result)
+    return {"prompt": prompt.prompt, "data": result}
 
 
 @router.post("/file", response_model=FileMetaDataRead)
@@ -60,7 +60,7 @@ async def file_upload(request: Request, file: UploadFile, session=Depends(get_se
         session.refresh(new_file)
 
         result = request.app.state.vector_store_manager.add_new_document(
-            doc_path=new_file.name, file_id=new_file.id
+            doc_path=new_file.name, file_id=str(new_file.id)
         )
 
         return new_file
