@@ -23,8 +23,7 @@ class LLMInferenceManager:
     def inference(self, query: str, context: str):
         prompt = self._setup_chat_template()
         chain = prompt | self.llm
-        for each in chain.stream({"query": query, "context": context}):
-            yield each.content
+        return chain.invoke({"query": query, "context": context})
 
     def _setup_chat_template(self) -> ChatPromptTemplate:
         prompt = ChatPromptTemplate.from_messages(

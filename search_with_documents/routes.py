@@ -7,7 +7,6 @@ from fastapi import (
     HTTPException,
     status,
 )
-from fastapi.responses import StreamingResponse
 from search_with_documents.db import get_session
 from search_with_documents.settings import settings
 from search_with_documents.models import FileMetaData
@@ -28,11 +27,12 @@ async def llm_response(request: Request, prompt: Prompt, session=Depends(get_ses
     result = request.app.state.vector_store_manager.retriever(
         query=prompt.prompt, file_id=str(prompt.file_id)
     )
-    return StreamingResponse(
-        content=request.app.state.llm_manager.inference(
-            query=prompt.prompt, context=result
-        )
+
+    llm_response = request.app.state.llm_manager.inference(
+        query=prompt.prompt, context=result
     )
+
+    return {"assistant": llm_response.content}
 
 
 @router.post("/file", response_model=FileMetaDataRead)

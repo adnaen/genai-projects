@@ -5,6 +5,7 @@ const docStatus = document.getElementById("docStatus");
 const prompt = document.getElementById("promptArea");
 const chatForm = document.getElementById("chatForm");
 const resultField = document.getElementById("resultField");
+const askBtn = document.getElementById("askBtn");
 const API_ROUTE = "http://localhost:8000/api/v1";
 
 fileUploadForm.addEventListener("submit", (event) => {
@@ -102,6 +103,9 @@ chatForm.addEventListener("submit", (event) => {
     return;
   }
 
+  askBtn.setAttribute("disabled", "true");
+  resultField.classList.remove("hidden");
+  resultField.innerText = "generating...";
   fetch(`${API_ROUTE}/ask`, {
     credentials: "include",
     method: "POST",
@@ -123,11 +127,10 @@ chatForm.addEventListener("submit", (event) => {
       }
     })
     .then((data) => {
-      resultField.classList.remove("hidden");
       resultField.innerText = `
-      get prompt: ${data.prompt}
-      get file name: ${data.file_name}
+      Asisstant-> ${data.assistant}
       `;
+      askBtn.removeAttribute("disabled");
     })
     .catch((err) => {
       console.error(err);
