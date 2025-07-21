@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     BASE_PATH: Path = Path(__file__).resolve().parent
     UPLOAD_PATH: Path = BASE_PATH / "uploads"
     CHROMA_PATH: Path = BASE_PATH / "chroma"
-    MODEL_PATH: Path = BASE_PATH / "models"
+    MODEL_PATH: Path = Path(__file__).resolve().parents[2] / "models"
 
     ALLOWED_FILES: List[str] = ["pdf", "txt", "md"]
 
