@@ -1,9 +1,8 @@
-from typing import Literal, List
+from typing import Literal
 from pathlib import Path
-from langchain_core.documents import Document
-from langchain.document_loaders import PyPDFLoader
-from langchain.document_loaders.base import BaseLoader
-from langchain.document_loaders.word_document import Docx2txtLoader
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders.base import BaseLoader
+from langchain_community.document_loaders.word_document import Docx2txtLoader
 
 
 def _get_loaders(
@@ -17,7 +16,7 @@ def _get_loaders(
             return Docx2txtLoader(file_path=file_path)
 
 
-def analyze(file_path: str | Path, file_type: Literal["pdf", "docx"]) -> List[Document]:
+def analyze(file_path: str | Path, file_type: Literal["pdf", "docx"]) -> str:
     loader = _get_loaders(file_path=file_path, file_type=file_type)
     content = loader.load()
-    return content
+    return content[0].page_content

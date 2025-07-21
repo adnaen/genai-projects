@@ -8,12 +8,12 @@ router = APIRouter(tags=["Analyzer"])
 
 
 @router.post("/analyze")
-def analyze_resume_(request: Request, file: UploadFile):
+def analyze_resume(request: Request, file: UploadFile, description: str | None = None):
     ext = file.filename.split(".")[1]
     if not ext in settings.ALLOWED_FILE_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File format only support : {settings.ALLOWED_FILE_TYPES} but Got {ext} instead",
+            detail=f"Only support : {settings.ALLOWED_FILE_TYPES} but Got '{ext}' instead",
         )
 
     os.makedirs(settings.ARTIFCATS_PATH, exist_ok=True)
@@ -23,4 +23,8 @@ def analyze_resume_(request: Request, file: UploadFile):
     content = fetch_resume(
         file_path=settings.ARTIFCATS_PATH / file.filename, file_type=ext
     )
-    return {"content": content}
+
+    llm_result = request.app.state.llm_inference_manager.ask(
+        resume_content=content, description=(description if description else None)
+    )
+    return {"assistant": llm_result, "model path": settings.MODEL_PATH}
