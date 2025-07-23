@@ -1,7 +1,8 @@
-const ResumeReview = () => {
+const ResumeReview = ({ assistantResponse }: { assistantResponse: string }) => {
 	return (
-		<div>
-			<h1 className="text-3xl">Insightes</h1>
+		<div className="my-10">
+			<h1 className="text-3xl font-bold">Insightes</h1>
+			<span>{assistantResponse}</span>
 		</div>
 	)
 }

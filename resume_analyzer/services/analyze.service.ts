@@ -1,7 +1,7 @@
-export class AnalyzeResume {
+export class AnalyzeResumeService {
   static readonly NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  static async analyzeResume(file: File): Promise<string[]> {
+  static async analyzeResume(file: File): Promise<string> {
     const formData = new FormData()
     formData.append('file', file)
     try {
@@ -9,10 +9,10 @@ export class AnalyzeResume {
         method: "POST",
         body: formData,
       })
-      const data: string[] = await response.json()
-      return data
+      const data = await response.json()
+      return data.assistant
     } catch (err) {
-      return []
+      return ""
     }
   }
 }
